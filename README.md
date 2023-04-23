@@ -17,7 +17,7 @@ ls | grep -p ".*png"
 
 - Certos comandos server para filtrar conteúdos específicos, como no exemplo da imagem abaixo:
 
-![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled.png)
+![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled.png)
 
 - Como funcionam as expressões regulares:
     - O **pattern** é só a regra
