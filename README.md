@@ -1,294 +1,245 @@
-# JavaScript para Web: Crie páginas dinâmicas
+# Expressões regulares: capturando textos de forma mágica
 
-# Conhecendo o Javascript
+# 1. Começando com Regex
 
-## Clicando no botão
-
-A tag audio do HTML precisa ter o atributo controls para ser exibida a barra de controles.
-
-## onclick
-
-O evento onclick executa certo comportamento usando JavaScript quando um botão é clicado
-
-```html
-<button onclick="alert('Pom')" class="tecla tecla_pom">Pom</button>
-```
-
-## Conectar JS com HTML
-
-Escrever Javascript dentro do HTML não é adequado, pois é muito mais demorada a manutenção. Porém pode ser usado para fins de teste.
-
-```html
-<script src="./main.js"></script>
-```
-
-```jsx
-alert('Olá mundo!'); // o ponto e virgula no Javascript é opcional, porém é recomendado usar para evitar alguns erros no futuro.
-```
-
-## Buscar um elemento
-
-É parecido com o que já fazemos com o CSS.
-
-### Query Selector
-
-O alert é uma funcionalidade que está em um escopo maior que é uma janela. Já o query selector é uma funcionalidade que precisa ter um escopo, que é onde você quer que o Javascript encontre o elemento com o seletor que voce definiu.
-
-Para isso usamos o document que é uma palavra reservada referenciando todo o documento HTML.
-
-O “.” serve para acessar esse escopo que voce selecionou que no caso é o document e usar as funções que aquele escopo tem.
-
-```jsx
-document.querySelector('')
-```
-
-selecionar o elemento HTML `input`do tipo `tel`
-
-```jsx
-document.querySelector(‘input[type=tel]’)
-```
-
-# Funções
-
-## Play no JS
-
-Ao escrever . após o objeto selecionado será mostrada todas as funções que podem ser usadas.
-
-```jsx
-document.querySelector('#som_tecla_pom').play()
-```
-
-## O que é uma função?
-
-### Local correto do Script
-
-Quando o navegador “abre” o arquivo HTML, se o script está no head, ele será lido antes do body e portanto não vai reconhecer certos objetos que estão no body.
-
-### Política dos navegadores
-
-Os navegadores tem uma política padrão de não permitir que seja executado sons assim que se entra em uma página.
-
-Por isso acontece um erro quando tentamos dar play em um som sem que o usuário clique em algo.
+## Começando a aprender Regex com Javascript
 
 <aside>
-💡 Quando um código precisa ser chamado só quando necessário precisamos de uma função para isso.
+🔤 Regex são um ***padrão de definir uma determinada cadeia de caracteres*** dentro de um texto maior
 
 </aside>
 
-```jsx
-// criando uma função para reproduzir o som de pom. sem retorno e sem parametros)
-function playSoundPom () {
-    document.querySelector('#som_tecla_pom').play();
-}
+Por exemplo ao procurar arquivos no prompt de comandos do Linux
+
+```powershell
+ls | grep -p ".*png"
 ```
 
-## Clique no botão
+- Certos comandos server para filtrar conteúdos específicos, como no exemplo da imagem abaixo:
 
-podemos passar a função no HTML, porém não é algo recomendado
+![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled.png)
 
-```jsx
-<button onclick="playSoundPom()" class="tecla tecla_pom">Pom</button>
-```
-
-Podemos usar o Javascript
-
-```jsx
-document.querySelector('.tecla_pom').onclick = playSoundPom;
-```
-
-Não devemos chamar  a função playSoundPom, mas sim atribuir o onclick a playSoundPom
-
-# Listas
-
-## Listas de elementos
-
-Podemos copiar TODAS as funções e chamadas de funções para CADA UM dos sons, porém se existissem 1000 botões teríamos que criar uma função para cada um deles, o que seria nada semântico e de difícil manutenção.
-
-### querySelectorAll
-
-Ao utilizarmos o querySelectorAll ao invés de capturarmos um elemento de cada vez, conseguimos pegar todos os elementos de uma só vez, isso facilita a manipulação, reutilização e manutenção do código.
-
-Ao invés de selecionar um único objeto precisamos selecionar vários.
-
-```jsx
-document.querySelectorAll('.tecla')
-//NodeList(9) [button.tecla.tecla_pom, button.tecla.tecla_clap, button.tecla.tecla_tim, button.tecla.tecla_puff, button.tecla.tecla_splash, button.tecla.tecla_toim, button.tecla.tecla_psh, button.tecla.tecla_tic, button.tecla.tecla_tom]
-```
-
-## Referências
-
-Precisamos deixar nosso código legível e pra isso usamos referencias, que são criadas com base no valor que elas vão guardar: por exemplo, se nosso objeto tiver o valor constante e não sera alterado ao longo do script, caso seja alterado seja variável declarar ela como variável. 
-
-Devemos ter por costume colocar nomes sugestivos
-
-```jsx
-const keysList = document.querySelectorAll('.tecla');
-```
-
-Isso deixa o código mais legível.
-
-## Conhecendo listas
-
-Acessando individualmente um elemento de uma lista:
-
-```jsx
-keyList[index]
-```
-
-# Iterando em listas
-
-## Utilizando loops para iterar em listas
-
-### While
-
-Podemos utilizar o loop for para iterar por cada item da lista e adicionar um event listener para cada um deles.
-
-```jsx
-while (count < keysList.length) {
-    keysList[count].onclick = playSoundPom;
+- Como funcionam as expressões regulares:
+    - O **pattern** é só a regra
+    - Uma expressão regular sozinha é apenas uma string. É preciso ter um software para interpretar a regex e aplicá-la no alvo. Esse software é o **Regex Engine**
+    - E assim teremos um **match**
     
-    count++;
-}
+    ![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%201.png)
+    
+
+## O nosso primeiro problema
+
+CSV - comma separated value.
+
+O nosso objetivo é tentar encontrar um padrão em cada linha:
+
+```
+João Fulano,123.456.789-00,21 de Maio de 1993,(21) 3079-9987,Rua do Ouvidor,50,20040-030,Rio de Janeiro
+Maria Fulana, 98765432100,11 de Abril de 1995,(11) 933339871,Rua Vergueiro,3185,04101-300,São Paulo
+denise teste, 987.654.321.00,28 de Dezembro de 1991,(31)45562712,SCS Qd. 8 Bl. B-50,11,70333-900,Rio Grande
 ```
 
-Neste exemplo, estamos adicionando um onclick para cada item da lista keysList, que executa a função playSoundPom quando o botão é clicado.
+- **`\d`** - dígitos
+- meta-char - alguns caracteres que possuem um significado especial para o regex engine. Especial significa que o regex engine não interpreta o valor literal e sim diferente.
+- **`.**` - Representa qualquer caractere especial
+- **`\.`** - Representa o valor literal do .
+- **`{999} ou *`** - quantifier - caractere especial para definir quantidade de caracteres
 
-## Funções com parâmetros
-
-Devemos criar funções genéricas que servem para varias coisas evitando ser especificar para um so objeto.
-
-Os parâmetros são os nomes que damos a valores que uma função pode receber em sua chamada, que podem ou não ter um valor padrão. Os parâmetros são valores que ficam disponíveis apenas no corpo da funcao.
-
-Por exemplo em uma função calculaMedia(), pode-se ter como parâmetros notaA e notaB, que são valores utilizados dentro dessa funcao.
-
-No nosso caso usamos o parâmetro para não precisar repetir a função para cada um dos sons a serem executados
+## **Mão na massa - Encontrando o CNPJ**
 
 ```jsx
-function playSound (audioId) {
-    document.querySelector(audioId).play();
-}
+\d{3}\.\d{3}\.\d{3}-\d{2} //regex para encontrar cpf 123.456.789-00
 ```
 
-## Funções anônimas
+![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%202.png)
 
-Na Função playSound temos que passar um parâmetro, porem ao atribuir onclick a função playSound não podemos chama-la pois nao podemos passar parâmetro ao atribuir, então como vamos passar o parâmetro para a função?
+## **Mão na massa - Encontrando o IP**
 
-Para isso usamos funções anônimas:
+- Regex para IP levando em conta que cada grupo pode ter de 1 a 3 dígitos
+    - `126.1.112.34`
+    - `128.126.12.244`
+    - `192.168.0.34`
 
 ```jsx
-keysList[count].onclick = function () {
-        playSound('#som_tecla_pom');
-    };
+\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
 ```
-
-Porém o ID da tecla ainda está fixo.
-
-## Textos dinâmicos
-
-na função anônima para reproduzir o som, o som ainda está estático
-
-```jsx
-keysList[count].onclick = () => {
-        playSound('#som_tecla_pom');
-    };
-```
-
-Para ficar de mais fácil entendimento e sem repetição de código desnecessário podemos criar uma constante para cada tecla da lista de teclas:
-
-```jsx
-const key = keysList[count]; //constante para cada tecla da lista
-const instrument = key.classList[1]; //constante para a classe de cada uma das teclas
-```
-
-Dessa forma o código completo fica assim: 
-
-```jsx
-//função que reproduz o som que tem a ID passada como parâmetro
-playSound = (audioId) => {
-    document.querySelector(audioId).play();
-}
-
-//criando um array com todos os itens que tem a classe .tecla
-const keysList = document.querySelectorAll('.tecla');
-
-//loop que itera por todos os elementos em keysList.
-for (let count = 0; count < keysList.length; count++) {
-	  const key = keysList[count]; //key recebe o elemento da lista na posição atual
-    const instrument = key.classList[1]; //instrument recebe a segunda classe do elemento atual
-    const idAudio = `#som_${instrument}`; //idAudio é definido como uma string que será usada para selecionar um elemento de audio no DOM
-
-		
-    key.onclick = () => playSound(idAudio); //definido um evento de clique para cada elemento key, o manipulador de eventos é uma funçãp anônima que chama a função play sound com o argumento idAudio
-}
-```
-
-# Eventos e lógicas
-
-## Eventos do teclado
-
-Ao tentar reproduzir o som usando o teclado, ao apertar espaço o sistema faz a animação de click, porém quando usamos enter não funciona, para isso precisamos usar o evento chamado **onkeydown**
-
-```jsx
-key.onkeydown = () => key.classList.add('ativa');
-```
-
-## **Adicionando e removendo classe**
-
-```jsx
-key.onkeydown = () => key.classList.add('ativa');
-key.onkeyup = () => key.classList.remove('ativa');
-```
-
-O problema dessa função é que ele faz isso com todas as teclas, então quando se pressiona a tecla tab a tecla de som fica ativa
-
-## Condições no código
-
-Se a barra de espaço ou a tecla enter for pressionada executar a função de manipulação do evento.
 
 <aside>
-🎫 Quando é passado um evento para uma função, o primeiro parâmetro é um objeto com vários detalhes do evento.
+🌐 Um IP tem quatro grupos de no mínimo um e máximo três números. Repare que estamos escapando o ponto (.) entre os números, que são blocos de dígitos \d entre 1 e 3 caracteres {1,3}
 
 </aside>
 
-```jsx
-key.onkeydown = (event) => {
-        console.log(event);
-        key.classList.add('ativa');
-    }
+## **Mão na massa - Encontrando o CEP**
+
+- definir a regex para encontrar o CEP dentro de uma linha no nosso CSV
+
+```
+João Fulano,123.456.789-00,21 de Maio de 1993,(21) 3079-9987,Rua do Ouvidor,50,20040-030,Rio de Janeiro
 ```
 
-Dessa forma podemos fazer isso:
-
 ```jsx
-key.onkeydown = (event) => {
-        event.code === 'Enter' || event.code === 'Space' ? key.classList.add('ativa') : '';
-    }
+\d{5}-\d{3}
 ```
 
-## Operador lógico
+## **Mão na massa - Buscando o telefone**
+
+- Qual padrão podemos utilizar para encontrar o número telefônico? Por exemplo: **(21) 3216-2345**
 
 ```jsx
-key.onkeydown = (event) => event.code === 'Enter' || event.code === 'Space' ? key.classList.add('ativa') : '';
+\(\d{2}\) \d{4,5}-\d{4}
 ```
 
-## Mais condições
+## **Para que servem Regex?**
 
-Caso o usuário chame a função playSound com um parametro inválido precisamos exibir um erro:
+- Em resumo os Regex servem para:
+    - Extrair seções específicas de um arquivo de texto
+    - Validação de formatação de, por exemplo, e-mail ou telefone
+    - Análise de arquivos de texto e extração de dados para, por exemplo, gravar no banco de dados
+    - Substituir o dos valores de um texto para limpar, reformatar ou alterar o conteúdo
+
+# 2. Classes com caracteres
+
+## Entendendo Classes de Caracteres
+
+- **`?**` - Caractere não obrigatório
+- **`{0,1}`** - Também torna o caractere não obrigatório
+- **`[-.]** ou **[0-9]`** - Definir classe de caracteres
+
+![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%203.png)
 
 ```jsx
-playSound = (audioSelector) => {
-    const element = document.querySelector(audioSelector);
+\d{3}\.?\d{3}\.?\d{3}[-.]?\d{2}
+```
 
-    element === null ? console.log('Elemento não encontrado') : element.play();
+## **Mãos na massa: Ajudando Alura**
+
+![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%204.png)
+
+![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%205.png)
+
+## Praticando classes e quantifier
+
+- **`\s`** - classe para espaços, sejam eles espaço ou tab
+- **`{1,} ou +`** - uma ou mais vezes
+- **`?`** - zero ou uma vezes
+- **`*`** - zero ou mais vezes
+- **`{n}`** - exatamente n vezes
+- **`{n,}`** - no mínimo n vezes
+- **`{n,m}`** - no mínimo n+1 vezes, no máximo m vezes.
+- **`\w`** - significa *word char* e é uma atalho para `[A-Za-z0-9]`.
+
+```
+denise teste, 987.654.32100,28      de Março de 1991,(31)45562712,SCS Qd. 8 Bl. B-50,11,70333-900,Rio Grande
+```
+
+```jsx
+[0-3]?\d\s+de\s+[A-Z][a-zç]{3,8}\s+de\s+[12]\d{3} // expressão regular para filtrar datas
+```
+
+![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%206.png)
+
+## Trabalhando com horários
+
+```
+19h32min16s.
+```
+
+```cpp
+\d{2}h\d{2}min\d{2}s // regex para filtrar esse padrão de tempo
+```
+
+## **Mão na massa: Reconhecendo a placa de um veículo**
+
+```
+KMG-8089
+```
+
+```jsx
+[A-Z]{3}-\d{4}
+```
+
+## **Mão na massa: expressão regular a favor dos alunos!**
+
+Ajude Gilberto e, claro, seus alunos, separando do arquivo CSV os **nomes e as notas dos** alunos que tiraram de `7.2` a `7.9` para que o professor "camarada" possa aprová-los!
+
+```
+9.8 - Robson, 7.1 - Teresa, 4.5 - Armênio, 6.5 - Zulu, 7.7 - Stefania, 7.8 - João, 5.0 - Romeu, 7.2 - Pompilho, 3.1 - Reinaldo, 7.3 - Bernadete, 4.7 - Cinério
+```
+
+```jsx
+7\.[2-9]\s+-\s+[^,]+
+```
+
+## **Mão na massa: Uma expressão regular incorreta pode prejudicar alguém**
+
+```
+10 - Bruce, 9.5 - Miranda, 7.9    - Bob, 10 - Zimbabue, 7.5 - Bety
+```
+
+```jsx
+[7]\.[5-9]\s+-\s+\w+
+```
+
+## **Mão na massa: Separando joio do trigo**
+
+Escreva uma expressão regular que faça *match* apenas com as palavras GARROTE, SERROTE e ROTEIRO. Não esqueça de usar nossa ferramenta para testar nossas expressões regulares.
+
+```
+BALEIRO GARROTE SERROTE GOLEIRO ROTEIRO
+```
+
+```jsx
+[A-Z]*ROTE[A-Z]*
+ou
+[A-Z]*ROT[A-Z]+
+```
+
+## **Opcional: Validando o usuário no serviço Rest**
+
+O `username` precisa ser da seguinte forma:
+
+- O limite é de 10 caracteres;
+- O primeiro caractere deve ser uma letra do alfabeto, não pode ser um número;
+- A partir do segundo caractere podemos ter letras maiúsculas, minúsculas e números;
+
+Como deve ficar a anotação `@Pattern` com uma expressão regular com essas características?
+
+```java
+public class User {
+    @Pattern(regexp = "???")
+    @NotEmpty
+    private String username;
+
 }
 ```
 
-## Melhorando o código
+```cpp
+[a-zA-Z][a-zA-Z\d]{0,9}
+```
+
+## **Para saber mais: Melhorando a legibilidade**
+
+Na aula criamos um pequeno "monstro" para definir a expressão da data. Como poderíamos deixar a expressão mais fácil de entender?
 
 ```jsx
-playSound = (audioSelector) => {
-    const element = document.querySelector(audioSelector);
-
-    element != null && element.localName === 'audio' ? element.play() : console.log('Elemento não encontrado');
-}
+[0-3]?\d\s+de\s+[A-Z][a-zç]{3,8}\s+de\s+[12]\d{3}
 ```
+
+```jsx
+var DIA  = "[0-3]?\d"; 
+var DE = "\s+de\s+";
+var MES  = "[A-Za-z][a-zç]{3,8}";
+var ANO  = "[12]\d{3}";
+
+var stringRegex = DIA + DE +  MES + DE + ANO;
+
+var objetoRegex  = new RegExp(stringRegex, 'g');
+```
+
+# Encontrando a posição certa com âncoras
+
+# Trabalhando com grupos
+
+# Ganancioso ou preguiçoso
+
+# Usando regex nas diversas linguagens
