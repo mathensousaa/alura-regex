@@ -24,7 +24,7 @@ ls | grep -p ".*png"
     - Uma expressão regular sozinha é apenas uma string. É preciso ter um software para interpretar a regex e aplicá-la no alvo. Esse software é o **Regex Engine**
     - E assim teremos um **match**
     
-    ![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%201.png)
+    ![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%201.png)
     
 
 ## O nosso primeiro problema
@@ -51,7 +51,7 @@ denise teste, 987.654.321.00,28 de Dezembro de 1991,(31)45562712,SCS Qd. 8 Bl. B
 \d{3}\.\d{3}\.\d{3}-\d{2} //regex para encontrar cpf 123.456.789-00
 ```
 
-![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%202.png)
+![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%202.png)
 
 ## **Mão na massa - Encontrando o IP**
 
@@ -105,7 +105,7 @@ João Fulano,123.456.789-00,21 de Maio de 1993,(21) 3079-9987,Rua do Ouvidor,50,
 - **`{0,1}`** - Também torna o caractere não obrigatório
 - **`[-.]** ou **[0-9]`** - Definir classe de caracteres
 
-![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%203.png)
+![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%203.png)
 
 ```jsx
 \d{3}\.?\d{3}\.?\d{3}[-.]?\d{2}
@@ -113,9 +113,9 @@ João Fulano,123.456.789-00,21 de Maio de 1993,(21) 3079-9987,Rua do Ouvidor,50,
 
 ## **Mãos na massa: Ajudando Alura**
 
-![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%204.png)
+![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%204.png)
 
-![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%205.png)
+![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%205.png)
 
 ## Praticando classes e quantifier
 
@@ -136,7 +136,7 @@ denise teste, 987.654.32100,28      de Março de 1991,(31)45562712,SCS Qd. 8 Bl.
 [0-3]?\d\s+de\s+[A-Z][a-zç]{3,8}\s+de\s+[12]\d{3} // expressão regular para filtrar datas
 ```
 
-![Untitled](Expresso%CC%83es%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%206.png)
+![Untitled](https://github.com/mathensousaa/alura-regex/blob/main/Expressões%20regulares%20capturando%20textos%20de%20forma%20m%20007730573ba9406d875f6d1aab590292/Untitled%206.png)
 
 ## Trabalhando com horários
 
